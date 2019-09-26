@@ -1,0 +1,79 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      <img src="http://riyafoodslimited.co.uk/images/home/logo.PNG" style="height:45px;"/>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-slides #Slides2 autoplay="3000" loop="true" speed="300" style="padding-bottom: 0%">
+    <ion-slide>
+      <ion-list no-line>
+        <ion-list-header style="font-size:20px;font-weight: bold">Food Store</ion-list-header>
+        <ion-item style="font-size:15px;">
+          Riya Foods Limited is a trusted international firm, delivering food product across United Kingdom.
+        </ion-item>
+      </ion-list>
+    </ion-slide>
+    <ion-slide>
+      <ion-list no-line>
+        <ion-list-header style="font-size:20px;font-weight: bold">100% Quality Assurance</ion-list-header>
+        <ion-item style="font-size:15px;">
+          We believe in delivering good quality food with every aspect of value.
+        </ion-item>
+      </ion-list>
+    </ion-slide>
+    <ion-slide>
+      <ion-list no-line>
+        <ion-list-header style="font-size:20px;font-weight: bold">24*7 Available</ion-list-header>
+        <ion-item style="font-size:15px;padding-bottom: 0%">
+          You can contact us at any time.We are there for you.
+        </ion-item>
+      </ion-list>
+    </ion-slide>
+  </ion-slides>
+  <!-- <ion-content class="slides-container"> -->
+  <ion-slides #Slides autoplay="3000" loop="true" speed="300">
+    <ion-slide>
+      <img src="http://riyafoodslimited.co.uk/images/home/food1.jpg" />
+      <div class="swiper-button-next" (click)="next()"></div>
+      <div class="swiper-button-prev" (click)="last()"></div>
+    </ion-slide>
+    <ion-slide>
+      <img src="http://riyafoodslimited.co.uk/images/home/food2.jpg" />
+      <div class="swiper-button-next" (click)="next()"></div>
+      <div class="swiper-button-prev" (click)="prev()"></div>
+    </ion-slide>
+    <ion-slide>
+      <img src="http://riyafoodslimited.co.uk/images/home/food3.jpg" />
+      <div class="swiper-button-next" (click)="first()"></div>
+      <div class="swiper-button-prev" (click)="prev()"></div>
+    </ion-slide>
+  </ion-slides>
+  <!-- </ion-content> -->
+  <br>
+  <h5>
+    <fieldset style="border:0px;border-top:2px solid lightgray;">
+      <legend style="color:orange;text-align: center">FOOD CATEGORY</legend>
+      <br>
+      <ion-card (click)="onSweet()">
+        <img src="http://riyafoodslimited.co.uk/images/Sweets1.jpg">
+        <ion-card-header style="text-align: center">
+          <ion-card-title>Sweets</ion-card-title>
+        </ion-card-header>
+      </ion-card>
+      <br>
+      <ion-card  (click)="onSnack()">
+        <img src="http://riyafoodslimited.co.uk/images/snacks.jpg">
+        <ion-card-header style="text-align: center">
+          <ion-card-title>Snacks</ion-card-title>
+        </ion-card-header>
+      </ion-card>
+    </fieldset>
+  </h5>
+</ion-content>

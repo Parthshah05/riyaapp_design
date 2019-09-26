@@ -1,0 +1,7 @@
+{
+  "name": "RiyaFoods",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
