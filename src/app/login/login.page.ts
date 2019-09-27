@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '../../../node_modules/@angular/router';
+import { ToastController } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-login',
@@ -7,7 +10,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginPage implements OnInit {
 
-  constructor() { }
+  constructor(public route: Router,public toastController: ToastController) { }
   email = '';
   password = '';
 
@@ -22,8 +25,15 @@ export class LoginPage implements OnInit {
 
   showPrompt() {  //for forgot password
   }
+ 
   onLogin(){
+    
+     
+       
+    this.route.navigateByUrl('/home');
+    
   }
   onSignup(){
+   
   }
 }

@@ -27,6 +27,11 @@ export class AppComponent {
       icon: 'cart'
     },
     {
+      title: 'My Profile',
+      url: '/profile',
+      icon: 'contact'
+    },
+    {
       title: 'Contact Us',
       url: '/contact',
       icon: 'call'
@@ -34,7 +39,12 @@ export class AppComponent {
     {
       title: 'Login',
       url: '/login',
-      icon: 'contact'
+      icon: 'person-add'
+    },
+    {
+      title: 'Logout',
+      url:'',
+      icon: 'log-out'
     }
   ];
 
