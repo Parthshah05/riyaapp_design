@@ -4,8 +4,14 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      <img src="http://riyafoodslimited.co.uk/images/home/logo.PNG" style="height:45px;"/>
+      <img src="http://riyafoodslimited.co.uk/images/home/logo.PNG" style="height:45px;" />
     </ion-title>
+    <ion-buttons slot="end">
+      <ion-button icon-only (click)="cart()">
+        <ion-icon color="primary" slot="icon-only" name="cart"></ion-icon>
+        <!-- <ion-badge color="white" style="padding-top: -20px">9</ion-badge> -->
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -68,7 +74,7 @@
         </ion-card-header>
       </ion-card>
       <br>
-      <ion-card  (click)="onSnack()">
+      <ion-card (click)="onSnack()">
         <img src="http://riyafoodslimited.co.uk/images/snacks.jpg">
         <ion-card-header style="text-align: center">
           <ion-card-title>Snacks</ion-card-title>

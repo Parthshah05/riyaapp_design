@@ -16,59 +16,144 @@
   <div class="splash-bg">
 
   </div>
-  <div class="splace-info" padding>
-    <ion-list>
+  <div class="splace-info" class="ion-padding">
+    <form [formGroup]="loginForm">
+      <ion-item>
+        <ion-input formControlName="email" id="email" style="font-size:17px;" required placeholder="Email ID"
+          type="text"></ion-input>
+      </ion-item>
+      <div *ngIf="!loginForm.get('email').valid &&
+      (loginForm.get('email').dirty || loginForm.get('email').touched)" class="error-messages">
+        Please Enter a Valid Email.
+      </div>
+      <div *ngIf="loginForm.get('email').required">
+        Email Id is required.
+      </div>
 
       <ion-item>
-        <ion-input style="font-size:17px;" placeholder="Email ID" type="email" [(ngModel)]="email" [required]="true"></ion-input>
+        <ion-input formControlName="password" id="password" style="font-size:17px;" required placeholder="Password"
+          type="password">
+        </ion-input>
       </ion-item>
+      <div *ngIf="!loginForm.get('password').valid &&
+      (loginForm.get('password').dirty || loginForm.get('password').touched)" class="error-messages">
+        Please Enter a Password.
+      </div>
+      <div *ngIf="!loginForm.get('password').minlength &&
+      (loginForm.get('password').dirty || loginForm.get('password').touched)" class="error-messages">
+        Password must be at least 6 characters long.
+      </div>
 
-      <ion-item>
-        <ion-input [clearInput]="true" style="font-size:17px;" placeholder="Password" type="password" [(ngModel)]="password"
-          [required]="true"></ion-input>
-      </ion-item>
-        <ion-button fill='clear' style="font-size:13px;padding-left:5px;padding-top:0px;"  (click)="showPrompt()">Forgot Password?</ion-button>
-    </ion-list>
-
-
-    <ion-button expand='block' fill='outline' color="warning" style="color:orange;height:38px;" (click)="onLogin()">
-      LOGIN&nbsp;&nbsp;
-      <ion-icon name="log-in"></ion-icon>
-    </ion-button>
+      <ion-button expand='block' fill='outline' color="warning" style="color:orange;height:38px;" type="submit"
+        [disabled]="loginForm.invalid" (click)="onSubmitLogin()">
+        Login
+        <ion-icon name="log-in"></ion-icon>
+      </ion-button>
+      <ion-button fill='clear' style="font-size:13px;padding-left:5px;padding-top:0px;" (click)="showPrompt()">Forgot
+        Password?</ion-button>
+    </form>
     <br><br>
     <fieldset style="border:0px;border-top:2px solid lightgray;">
-      <legend style="font-size:25px;text-align:center;padding-bottom:0px;font-weight:bold;text-shadow:1px 1px gray;color:orange">OR</legend>
+      <legend
+        style="font-size:25px;text-align:center;padding-bottom:0px;font-weight:bold;text-shadow:1px 1px gray;color:orange">
+        OR</legend>
     </fieldset>
-    <ion-list>
+
+    <form [formGroup]="signUpForm">
+      <ion-item>
+        <ion-input required placeholder="Name" formControlName="fname" type="text" style="font-size:17px;"></ion-input>
+      </ion-item>
+      <div *ngIf="!signUpForm.get('fname').valid &&
+      (signUpForm.get('fname').dirty || signUpForm.get('fname').touched)" class="error-messages">
+        Name is Required.
+      </div>
+      <!-- <div *ngIf="signUpForm.get('fname').errors.required &&
+      (signUpForm.get('fname').dirty || signUpForm.get('fname').touched)">
+        Name is Required.
+      </div> -->
 
       <ion-item>
-        <ion-input style="font-size:17px;" placeholder="Name" type="text" [(ngModel)]="name" [required]="true"></ion-input>
+        <ion-input required placeholder="Company Name" formControlName="company" type="text" style="font-size:17px;">
+        </ion-input>
+      </ion-item>
+      <div *ngIf="!signUpForm.get('company').valid &&
+      (signUpForm.get('company').dirty || signUpForm.get('company').touched)" class="error-messages">
+        Company Name is Required.
+      </div>
+
+      <ion-item>
+        <ion-input required placeholder="E-Mail" formControlName="s_email" type="email" style="font-size:17px;">
+        </ion-input>
+      </ion-item>
+      <div *ngIf="!signUpForm.get('s_email').valid &&
+      (signUpForm.get('s_email').dirty || signUpForm.get('s_email').touched)" class="error-messages">
+        E-Mail is Required.
+      </div>
+
+      <ion-item>
+        <ion-input required placeholder="Password" formControlName="s_password" type="password" style="font-size:17px;">
+        </ion-input>
+      </ion-item>
+      <div *ngIf="signUpForm.get('s_password').minlength &&
+      (signUpForm.get('s_password').dirty || signUpForm.get('s_password').touched)" class="error-messages">
+        Password must be at least 6 characters long.
+      </div>
+      <div *ngIf="!signUpForm.get('s_password').valid &&
+      (signUpForm.get('s_password').dirty || signUpForm.get('s_password').touched)" class="error-messages">
+        Password is Required.
+      </div>
+
+      <ion-item>
+        <ion-input required placeholder="Contact No" formControlName="contact" type="tel" style="font-size:17px;">
+        </ion-input>
+      </ion-item>
+      <div *ngIf="!signUpForm.get('contact').valid &&
+      (signUpForm.get('contact').dirty || signUpForm.get('contact').touched)" class="error-messages">
+        Valid Contact No is Required.
+      </div>
+
+      <ion-button expand='block' fill='outline' color="warning" style="color:orange;height:38px;" type="submit"
+        [disabled]="signUpForm.invalid" (click)="onSignup()">
+        Sign Up
+        <ion-icon name="person-add"></ion-icon>
+      </ion-button>
+
+
+    </form>
+
+
+    <!-- <ion-list>
+      <ion-item>
+        <ion-input style="font-size:17px;" placeholder="Name" type="text" [(ngModel)]="name" [required]="true">
+        </ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-input style="font-size:17px;" placeholder="Company Name" type="text" [(ngModel)]="cname" [required]="true"></ion-input>
+        <ion-input style="font-size:17px;" placeholder="Company Name" type="text" [(ngModel)]="cname" [required]="true">
+        </ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-input style="font-size:17px;" placeholder="Email ID" type="email" [(ngModel)]="s_email" [required]="true"></ion-input>
+        <ion-input style="font-size:17px;" placeholder="Email ID" type="email" [(ngModel)]="s_email" [required]="true">
+        </ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-input [clearInput]="true" style="font-size:17px;" placeholder="Password" type="password" [(ngModel)]="s_password"
-          [required]="true"></ion-input>
+        <ion-input [clearInput]="true" style="font-size:17px;" placeholder="Password" type="password"
+          [(ngModel)]="s_password" [required]="true"></ion-input>
       </ion-item>
-    
+
       <ion-item>
-        <ion-input [clearInput]="true" style="font-size:17px;" placeholder="Mobile No." type="number" [(ngModel)]="mobile"
-          [required]="true"></ion-input>
+        <ion-input [clearInput]="true" style="font-size:17px;" placeholder="Mobile No." type="number"
+          [(ngModel)]="mobile" [required]="true"></ion-input>
       </ion-item>
 
-    </ion-list>
+    </ion-list> -->
 
-    <ion-button expand='block' fill='outline' color="warning" style="color:orange;height:38px;" (click)="onSignup()">
+    <!-- <ion-button expand='block' fill='outline' color="warning" style="color:orange;height:38px;" (click)="onSignup()">
       SIGNUP&nbsp;&nbsp;
       <ion-icon name="person-add"></ion-icon>
-    </ion-button>
-  </div> 
+    </ion-button> -->
+  </div>
 
 </ion-content>
