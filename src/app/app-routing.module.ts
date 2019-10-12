@@ -4,8 +4,12 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'splash',
     pathMatch: 'full'
+  },
+  {
+    path: 'splash',
+    loadChildren: () => import('./splash/splash.module').then(m => m.SplashPageModule)
   },
   {
     path: 'home',
@@ -23,7 +27,8 @@ const routes: Routes = [
   { path: 'login', loadChildren: './login/login.module#LoginPageModule' },
   { path: 'signup', loadChildren: './signup/signup.module#SignupPageModule' },
   { path: 'contact', loadChildren: './contact/contact.module#ContactPageModule' },
-  { path: 'profile', loadChildren: './profile/profile.module#ProfilePageModule' }
+  { path: 'profile', loadChildren: './profile/profile.module#ProfilePageModule' },
+  { path: 'modal', loadChildren: './modal/modal.module#ModalPageModule' }
 ];
 
 @NgModule({
@@ -32,4 +37,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

@@ -1,0 +1,120 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title
+      ><font *ngIf="action == 'update'">Update Profile</font>
+      <font *ngIf="action == 'change'">Change Password</font>
+      <ion-icon
+        name="close-circle-outline"
+        style="font-size:30px;cursor: pointer;float:right;color:orange;"
+        (click)="dismiss()"
+      ></ion-icon>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="action == 'update'">
+  <ion-list>
+    <ion-item>
+      <b>Email :&nbsp;</b>
+      <ion-input
+        placeholder="Email ID"
+        type="email"
+        style="color:darkslategray"
+        [(ngModel)]="user.user_email"
+        [required]="true"
+      ></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <b>Name :&nbsp;</b>
+      <ion-input
+        placeholder="Name"
+        type="text"
+        style="color:darkslategray"
+        [(ngModel)]="user.user_name"
+        [required]="true"
+      ></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <b>Company :&nbsp; </b>
+      <ion-input
+        [clearInput]="true"
+        style="color:darkslategray"
+        placeholder="Your Company Name"
+        type="text"
+        [(ngModel)]="user.user_company_name"
+        [required]="true"
+      ></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <b>Mobile No.:&nbsp;</b>
+      <ion-input
+        clearOnEdit="true"
+        style="color:darkslategray"
+        placeholder="Mobile No"
+        type="text"
+        [(ngModel)]="user.user_contact"
+        [required]="true"
+      ></ion-input>
+    </ion-item>
+  </ion-list>
+&nbsp;
+  <ion-button
+    expand="block"
+    fill="outline"
+    color="warning"
+    style="color:orange;height:38px;"
+    (click)="onUpdate()"
+  >
+    Update
+  </ion-button>
+</ion-content>
+
+<ion-content *ngIf="action == 'change'">
+  <ion-list>
+    <ion-item>
+      <b>Old Password :&nbsp;</b>
+      <ion-input
+        placeholder="Enter Old Passoword"
+        type="password"
+        style="color:darkslategray"
+        [(ngModel)]="old_password"
+        [required]="true"
+      ></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <b>New Password :&nbsp;</b>
+      <ion-input
+        placeholder="Enter New Passoword"
+        type="password"
+        style="color:darkslategray"
+        [(ngModel)]="new_password"
+        [required]="true"
+      ></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <b>Confirm Password :&nbsp;</b>
+      <ion-input
+        placeholder="Enter New Passoword"
+        type="password"
+        style="color:darkslategray"
+        [(ngModel)]="confirm_password"
+        [required]="true"
+      ></ion-input>
+    </ion-item>
+&nbsp;
+    <ion-button
+      expand="block"
+      fill="outline"
+      color="warning"
+      style="color:orange;height:38px;"
+      (click)="onChangePass()"
+    >
+      Change Password
+    </ion-button>
+  </ion-list>
+</ion-content>

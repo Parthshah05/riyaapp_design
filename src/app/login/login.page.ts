@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '../../../node_modules/@angular/router';
 import { ToastController } from '@ionic/angular';
+import { AlertController } from "@ionic/angular";
 
 
 @Component({
@@ -10,7 +11,7 @@ import { ToastController } from '@ionic/angular';
 })
 export class LoginPage implements OnInit {
 
-  constructor(public route: Router,public toastController: ToastController) { }
+  constructor(public route: Router,public toastController: ToastController,public alertController: AlertController) { }
   email = '';
   password = '';
 
@@ -35,5 +36,24 @@ export class LoginPage implements OnInit {
   }
   onSignup(){
    
+  }
+  async onotp(){
+    const alert = await this.alertController.create({
+      header: 'Enter OTP',
+      inputs: [
+        {
+          name: 'name1',
+          type: 'number',
+          placeholder: 'Your OTP',
+          max:'4',
+          
+        }
+      ],
+    
+      //message: 'This is an alert message.',
+      buttons: ['Proceed','Cancel']
+    });
+
+    await alert.present();
   }
 }
