@@ -12,9 +12,6 @@
 <ion-content>
 
   <ion-list>
-    <!-- <ion-list-header>
-     
-    </ion-list-header> -->
     <ion-searchbar showCancelButton placeholder="Search {{category}}" (ionInput)="getItems($event)">
       </ion-searchbar>
     <ion-item *ngFor="let prod of products">
