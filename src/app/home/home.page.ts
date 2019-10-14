@@ -32,5 +32,7 @@ export class HomePage {
   onSnack() {
     this.route.navigateByUrl('/list/snacks');
   }
-
+  cart() {
+    this.route.navigateByUrl('/cart');
+  }
 }

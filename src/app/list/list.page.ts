@@ -4,37 +4,97 @@ import { LoadingController, NavController, NavParams } from '../../../node_modul
 import { NavComponent } from '../../../node_modules/@ionic/core';
 import { Router, RouterModule, ActivatedRoute } from '../../../node_modules/@angular/router';
 
+import { ProductsDbService } from '../providers/products-db/products-db.service'
+import { Products_Category_Classs } from "../shared/Products_Category_class";
+
+
 @Component({
   selector: 'app-list',
   templateUrl: 'list.page.html',
   styleUrls: ['list.page.scss']
 })
 export class ListPage implements OnInit {
-  category = 'All products';
+  category = 'products';
   qty: number = 1;
+
+  products: Products_Category_Classs[] = [];
+  productsDup: Products_Category_Classs[] = [];
+
   public items: Array<{ title: string; categ: string; qty: number }> = [];
-  constructor(activated_route: ActivatedRoute) {
+  constructor(private activated_route: ActivatedRoute,
+    private productsDB: ProductsDbService) {
     console.log(activated_route.snapshot.paramMap.get('cat'));
-    this.category = 'All products';
-    if (activated_route.snapshot.paramMap.get('cat') != null) {
-      this.category = activated_route.snapshot.paramMap.get('cat');
-    }
+    this.category = 'products';
+
     for (let i = 1; i < 11; i++) {
       this.items.push({
         title: 'Item ' + i,
-        categ: this.category ,
+        categ: this.category,
         qty: 1
       });
     }
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    if (this.activated_route.snapshot.paramMap.get('cat') != null) {
+      this.category = this.activated_route.snapshot.paramMap.get('cat');
+      var cat_id;
+      if (this.category === 'sweets') {
+        cat_id = 1;
+      }
+      else if (this.category === 'snacks') {
+        cat_id = 2;
+      }
+
+      this.productsDB.GetProductsByCategory(cat_id).subscribe(
+        (data: Products_Category_Classs[]) => {
+          this.products = data;
+          this.productsDup = data;
+          this.products.forEach(product => { product.qty = 1; });
+          /* console.log(this.products); */
+        },
+        err => {
+          console.log(err);
+        },
+        () => {
+
+        }
+      )
+    }
+    else {
+      this.productsDB.GetAllProducts().subscribe(
+        (data: Products_Category_Classs[]) => {
+          this.products = data;
+          this.productsDup = data;
+          this.products.forEach(product => { product.qty = 1; });
+          /* console.log(this.products); */
+        },
+        err => {
+          console.log(err);
+        },
+        () => {
+
+        }
+      )
+    }
   }
-  onInc(e, i) {
-    i.qty += 1;
+  onInc(prod: Products_Category_Classs) {
+    prod.qty++;
   }
-  onDec(e, i) {
-    i.qty -= 1;
+  onDec(prod: Products_Category_Classs) {
+    if (prod.qty > 0) {
+      prod.qty--;
+    }
+  }
+
+  getItems(ev) {
+    this.products = this.productsDup;
+    const val = ev.target.value;
+    if (val && val.trim() !== "") {
+      this.products = this.products.filter(
+        x => x.product_name.toLowerCase().indexOf(val.toLowerCase()) > -1
+      );
+    }
   }
   // add back when alpha.4 is out
   // navigate(item) {
