@@ -2,7 +2,7 @@
 
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+      <ion-menu-button [menu]="menu"></ion-menu-button>
     </ion-buttons>
     <ion-title>LOGIN</ion-title>
   </ion-toolbar>
@@ -35,14 +35,15 @@
           type="password">
         </ion-input>
       </ion-item>
+      <!-- <div *ngIf="!loginForm.get('password').minlength &&
+      (loginForm.get('password').dirty || loginForm.get('password').touched)" class="error-messages">
+        Password must be at least 6 characters long.
+      </div> -->
       <div *ngIf="!loginForm.get('password').valid &&
       (loginForm.get('password').dirty || loginForm.get('password').touched)" class="error-messages">
         Please Enter a Password.
       </div>
-      <div *ngIf="!loginForm.get('password').minlength &&
-      (loginForm.get('password').dirty || loginForm.get('password').touched)" class="error-messages">
-        Password must be at least 6 characters long.
-      </div>
+
 
       <ion-button expand='block' fill='outline' color="warning" style="color:orange;height:38px;" type="submit"
         [disabled]="loginForm.invalid" (click)="onSubmitLogin()">
@@ -94,14 +95,14 @@
         <ion-input required placeholder="Password" formControlName="s_password" type="password" style="font-size:17px;">
         </ion-input>
       </ion-item>
-      <div *ngIf="signUpForm.get('s_password').minlength &&
-      (signUpForm.get('s_password').dirty || signUpForm.get('s_password').touched)" class="error-messages">
-        Password must be at least 6 characters long.
-      </div>
       <div *ngIf="!signUpForm.get('s_password').valid &&
       (signUpForm.get('s_password').dirty || signUpForm.get('s_password').touched)" class="error-messages">
         Password is Required.
       </div>
+      <!-- <div *ngIf="signUpForm.get('s_password').minlength &&
+      (signUpForm.get('s_password').dirty || signUpForm.get('s_password').touched)" class="error-messages">
+        Password must be at least 6 characters long.
+      </div> -->
 
       <ion-item>
         <ion-input required placeholder="Contact No" formControlName="contact" type="tel" style="font-size:17px;">
@@ -118,6 +119,11 @@
         <ion-icon name="person-add"></ion-icon>
       </ion-button>
 
+      <ion-button expand='block' fill='outline' color="warning" style="color:orange;height:38px;" type="submit"
+        (click)="onotp()">
+        Verify OTP
+        <ion-icon name="check"></ion-icon>
+      </ion-button>
 
     </form>
 

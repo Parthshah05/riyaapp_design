@@ -25,14 +25,6 @@ export class ListPage implements OnInit {
     private productsDB: ProductsDbService) {
     console.log(activated_route.snapshot.paramMap.get('cat'));
     this.category = 'products';
-
-    for (let i = 1; i < 11; i++) {
-      this.items.push({
-        title: 'Item ' + i,
-        categ: this.category,
-        qty: 1
-      });
-    }
   }
 
   async ngOnInit() {
@@ -45,37 +37,24 @@ export class ListPage implements OnInit {
       else if (this.category === 'snacks') {
         cat_id = 2;
       }
+      // this.products=this.productsDB.GetProductsByCategory(cat_id);
+      // this.productsDB.GetProductsByCategory(cat_id).subscribe(
+      //   (data: Products_Category_Classs[]) => {
+      //     this.products = data;
+      //     this.productsDup = data;
+      //     this.products.forEach(product => { product.qty = 1; });
+      //     /* console.log(this.products); */
+      //   },
+      //   err => {
+      //     console.log(err);
+      //   },
+      //   () => {
 
-      this.productsDB.GetProductsByCategory(cat_id).subscribe(
-        (data: Products_Category_Classs[]) => {
-          this.products = data;
-          this.productsDup = data;
-          this.products.forEach(product => { product.qty = 1; });
-          /* console.log(this.products); */
-        },
-        err => {
-          console.log(err);
-        },
-        () => {
-
-        }
-      )
+      //   }
+      // )
     }
     else {
-      this.productsDB.GetAllProducts().subscribe(
-        (data: Products_Category_Classs[]) => {
-          this.products = data;
-          this.productsDup = data;
-          this.products.forEach(product => { product.qty = 1; });
-          /* console.log(this.products); */
-        },
-        err => {
-          console.log(err);
-        },
-        () => {
-
-        }
-      )
+      this.products = this.productsDB.GetAllProducts();
     }
   }
   onInc(prod: Products_Category_Classs) {

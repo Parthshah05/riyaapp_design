@@ -4,3 +4,15 @@
   top: 0;
   left: 0;
 }
+ion-toolbar {
+  // --background: var(--ion-color-primary);
+  --color: var(--menu-color);
+}
+
+ion-toolbar ion-menu-button {
+  color: yellow
+}
+
+
+
+/* https://tobiasahlin.com/spinkit/ */
