@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Platform, ModalController, MenuController } from '@ionic/angular';
+import { Platform, ModalController, MenuController, AlertController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { SplashPage } from './splash/splash.page';
@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
 
 import { timer } from 'rxjs';
 import { Storage } from '@ionic/storage';
+import { isNumber } from 'util';
+import { ProductsDbService } from './providers/products-db/products-db.service';
 
 @Component({
   selector: 'app-root',
@@ -69,13 +71,14 @@ export class AppComponent implements OnInit {
       title: 'Contact Us',
       url: '/contact',
       icon: 'call'
-    },
+    }/* ,
     {
       title: 'Logout',
       url: '',
       icon: 'log-out'
-    }
+    } */
   ];
+
 
 
   constructor(
@@ -85,7 +88,9 @@ export class AppComponent implements OnInit {
     public modalCtrl: ModalController,
     public route: Router,
     private storage: Storage,
-    private menuCtrl: MenuController
+    private menuCtrl: MenuController,
+    private alertController: AlertController,
+    private productService: ProductsDbService
   ) {
     this.initializeApp();
 
@@ -93,21 +98,28 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     var user_id = "";
+    this.productService.GetAllProducts();
+    this.productService.GetProductsByCategory(1);
+    this.productService.GetProductsByCategory(2);
     this.storage.get('user_id').then((val) => {
       console.log('user_id', val);
       user_id = val;
-    });
+      if (!isNumber(user_id)) {
+        /* this.menuCtrl.close('withoutLogout'); */
+        this.menuCtrl.enable(true, 'withLogout');
+        this.menuCtrl.open('withLogout');
+        /* this.menuCtrl.close('withoutLogout');
+        this.menuCtrl.open('withLogout'); */
+      }
+      else {
+        /* this.menuCtrl.close('withLogout'); */
+        this.menuCtrl.enable(true, 'withoutLogout');
+        this.menuCtrl.open('withoutLogout');
 
-    if (user_id.length !== null) {
-      /* this.menuCtrl.close('withoutLogout'); */
-      this.menuCtrl.enable(true, 'withLogout');
-      this.menuCtrl.open('withLogout');
-    }
-    else {
-      /* this.menuCtrl.close('withLogout'); */
-      this.menuCtrl.enable(true, 'withoutLogout');
-      this.menuCtrl.open('withoutLogout');
-    }
+        /* this.menuCtrl.close('withLogout');
+        this.menuCtrl.open('withoutLogout'); */
+      }
+    });
   }
 
   initializeApp() {
@@ -123,5 +135,23 @@ export class AppComponent implements OnInit {
       });
 
     });
+
+    document.addEventListener("offline", async () => {
+      const alert = await this.alertController.create({
+        header: 'Network was disconnected :-(',
+        subHeader: 'Please check your connection and Try Again!',
+        buttons: ['Okay']
+      });
+      console.log('no internet');
+      await alert.present();
+    }, false);
+  }
+
+  logout() {
+    this.storage.remove('user_id');
+    this.storage.clear();
+
+    this.menuCtrl.enable(true, 'withoutLogout');
+    this.menuCtrl.open('withoutLogout');
   }
 }

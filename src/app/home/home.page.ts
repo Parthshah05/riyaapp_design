@@ -2,6 +2,7 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { IonSlides, NavController } from '../../../node_modules/@ionic/angular';
 import { Router } from '../../../node_modules/@angular/router';
 import { Storage } from '@ionic/storage';
+import { isNumber } from 'util';
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -21,14 +22,13 @@ export class HomePage implements OnInit {
     this.storage.get('user_id').then((val) => {
       console.log('user_id ' + val + ' home');
       this.user_id = val;
+      if (isNumber(this.user_id)) {
+        this.menu = "withLogout";
+      }
+      else {
+        this.menu = "withoutLogout";
+      }
     });
-    if (this.user_id.length == null) {
-      this.menu = "withLogout";
-    }
-    else {
-      this.menu = "withoutLogout";
-    }
-    console.log('2');
   }
 
   last() {

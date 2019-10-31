@@ -74,7 +74,7 @@ export class LoginPage implements OnInit {
   menu = "withoutLogout";
 
   ngOnInit() {
-    
+
   }
 
   showPrompt() {  //for forgot password
@@ -180,7 +180,7 @@ export class LoginPage implements OnInit {
             this.userDB.verifyUser(data.name1).subscribe(
               async (data: any) => {
                 console.log(data);
-                if (data[0].result === "true") {
+                if (data.result === true) {
                   let t1 = await this.toast.create({
                     message: 'User Verified Successfully! Please Login!',
                     color: 'success',
@@ -190,7 +190,7 @@ export class LoginPage implements OnInit {
                   });
                   t1.present();
                 }
-                else if (data[0].result === "false") {
+                else if (data.result === false) {
                   let t2 = await this.toast.create({
                     message: 'Invalid OTP',
                     color: 'warning',

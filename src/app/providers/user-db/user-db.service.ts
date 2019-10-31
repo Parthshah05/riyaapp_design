@@ -10,7 +10,7 @@ export class UserDbService {
   private urllogin: string = "http://api.riyafoodslimited.co.uk/index.php/login";
   private urlsignup: string = "http://api.riyafoodslimited.co.uk/index.php/signup";
   private urlUser: string = "http://api.riyafoodslimited.co.uk/index.php/user";
-  private verigyUrl: string = "http://api.riyafoodslimited.co.uk/index.php/verify"
+  private verifyUrl: string = "http://api.riyafoodslimited.co.uk/index.php/verify"
 
   constructor(private http: HttpClient) { }
 
@@ -35,7 +35,7 @@ export class UserDbService {
 
   editUser(user: UserEdit) {
     const body = JSON.stringify(user);
-    return this.http.put(this.urlsignup, body, {
+    return this.http.put(this.urlUser, body, {
       headers: new HttpHeaders().set("Content-type", "application/json")
     });
   }
@@ -46,8 +46,8 @@ export class UserDbService {
 
   changeUserPassword(user_id, old_password, new_password) {
     var password = {
-      old_password: old_password,
-      new_password: new_password
+      user_password: old_password,
+      user_password_new: new_password
     };
     const body = JSON.stringify(password);
     return this.http.put(this.urlUser + "/" + user_id, body, {
@@ -60,7 +60,7 @@ export class UserDbService {
       otp: otp
     };
     const body = JSON.stringify(otpObj);
-    return this.http.put(this.urlUser, body, {
+    return this.http.put(this.verifyUrl, body, {
       headers: new HttpHeaders().set('Content-Type', 'application/json')
     });
   }

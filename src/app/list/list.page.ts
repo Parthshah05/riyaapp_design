@@ -30,6 +30,7 @@ export class ListPage implements OnInit {
   async ngOnInit() {
     if (this.activated_route.snapshot.paramMap.get('cat') != null) {
       this.category = this.activated_route.snapshot.paramMap.get('cat');
+      this.productsDup = this.products;
       var cat_id;
       if (this.category === 'sweets') {
         cat_id = 1;
@@ -37,24 +38,13 @@ export class ListPage implements OnInit {
       else if (this.category === 'snacks') {
         cat_id = 2;
       }
-      // this.products=this.productsDB.GetProductsByCategory(cat_id);
-      // this.productsDB.GetProductsByCategory(cat_id).subscribe(
-      //   (data: Products_Category_Classs[]) => {
-      //     this.products = data;
-      //     this.productsDup = data;
-      //     this.products.forEach(product => { product.qty = 1; });
-      //     /* console.log(this.products); */
-      //   },
-      //   err => {
-      //     console.log(err);
-      //   },
-      //   () => {
-
-      //   }
-      // )
+      this.products = this.productsDB.GetProductsByCategory(cat_id);
+      this.products.forEach(product => { product.qty = 1; });
     }
     else {
       this.products = this.productsDB.GetAllProducts();
+      this.productsDup = this.products;
+      this.products.forEach(product => { product.qty = 1; });
     }
   }
   onInc(prod: Products_Category_Classs) {
