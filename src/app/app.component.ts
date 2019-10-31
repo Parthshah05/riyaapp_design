@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Platform, ModalController, MenuController, AlertController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { SplashPage } from './splash/splash.page';
 import { Router } from '@angular/router';
 
 import { timer } from 'rxjs';
@@ -99,8 +98,6 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     var user_id = "";
     this.productService.GetAllProducts();
-    this.productService.GetProductsByCategory(1);
-    this.productService.GetProductsByCategory(2);
     this.storage.get('user_id').then((val) => {
       console.log('user_id', val);
       user_id = val;
