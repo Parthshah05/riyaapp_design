@@ -10,7 +10,8 @@ export class UserDbService {
   private urllogin: string = "http://api.riyafoodslimited.co.uk/index.php/login";
   private urlsignup: string = "http://api.riyafoodslimited.co.uk/index.php/signup";
   private urlUser: string = "http://api.riyafoodslimited.co.uk/index.php/user";
-  private verifyUrl: string = "http://api.riyafoodslimited.co.uk/index.php/verify"
+  private verifyUrl: string = "http://api.riyafoodslimited.co.uk/index.php/verify";
+  private contact: string = "http://api.riyafoodslimited.co.uk/index.php/contactus";
 
   constructor(private http: HttpClient) { }
 
@@ -63,5 +64,14 @@ export class UserDbService {
     return this.http.put(this.verifyUrl, body, {
       headers: new HttpHeaders().set('Content-Type', 'application/json')
     });
+  }
+
+  contactUS(user_name, user_email, user_subject, user_message) {
+    var contact = {
+      user_name: user_name,
+      user_email: user_email,
+      user_subject: user_subject,
+      user_message: user_message
+    }
   }
 }

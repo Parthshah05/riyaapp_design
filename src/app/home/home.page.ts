@@ -2,7 +2,7 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { IonSlides, NavController } from '../../../node_modules/@ionic/angular';
 import { Router } from '../../../node_modules/@angular/router';
 import { Storage } from '@ionic/storage';
-import { isNumber } from 'util';
+import { isNumber, isNullOrUndefined } from 'util';
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -13,7 +13,7 @@ export class HomePage implements OnInit {
   @ViewChild('Slides2', null) slides2: IonSlides;
 
   menu = "withoutLogout";
-  user_id = "";
+  user_id;
   constructor(public route: Router,
     private storage: Storage) { }
 
@@ -22,7 +22,8 @@ export class HomePage implements OnInit {
     this.storage.get('user_id').then((val) => {
       console.log('user_id ' + val + ' home');
       this.user_id = val;
-      if (isNumber(this.user_id)) {
+      console.log(isNullOrUndefined(this.user_id));
+      if (!isNullOrUndefined(this.user_id)) {
         this.menu = "withLogout";
       }
       else {

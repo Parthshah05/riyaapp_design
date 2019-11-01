@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { User } from '../Classes/user_class';
-import { NavParams, ModalController, LoadingController, ToastController } from '@ionic/angular';
+import { NavParams, ModalController, LoadingController, ToastController, NavController } from '@ionic/angular';
 import { UserDbService } from '../providers/user-db/user-db.service';
 import { Storage } from '@ionic/storage';
 import { UserEdit } from '../shared/User_class';
@@ -24,6 +24,7 @@ export class ModalPage implements OnInit {
   mobile = "";
   company = "";
   constructor(public navparams: NavParams,
+    public navCtrl: NavController,
     public modalCtrl: ModalController,
     public load: LoadingController,
     public toast: ToastController,
