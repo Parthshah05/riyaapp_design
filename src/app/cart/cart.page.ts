@@ -4,6 +4,7 @@ import { CartDbService } from '../providers/cart-db/cart-db.service';
 import { Cart_Class } from '../shared/Cart_class';
 import { Storage } from '@ionic/storage';
 import { isNullOrUndefined } from 'util';
+import { async } from '@angular/core/testing';
 
 
 @Component({
@@ -65,7 +66,7 @@ export class CartPage implements OnInit {
     });
   }
   onInc(cart) {
-    cart.product_qty += 1;
+    cart.product_qty = Number(cart.product_qty) + 1;
     this.storage.get('user_id').then((val) => {
       this.user_id = val;
       this.cartDB.updateCart(this.user_id, cart.product_id, cart.product_qty).subscribe(
@@ -82,14 +83,24 @@ export class CartPage implements OnInit {
       );
     })
   }
-  async onqt() {
-    const alert = await this.alertCtrl.create({
-      header: 'Your Quatation',
 
-      message: 'We Got Your Requirement List.We Will Contact With You Within Some Time.',
-      buttons: ['OK']
+  onqt() {
+    this.storage.get('user_id').then((val) => {
+      this.user_id = val;
+      this.cartDB.checkoutCart(this.user_id).subscribe(
+        async (data: any) => {
+          if (data.reason === true) {
+            const alert = await this.alertCtrl.create({
+              header: 'Your Quatation',
+              message: 'We Got Your Requirement List.We Will Contact With You Within Some Time.',
+              buttons: ['OK']
+            });
+
+            await alert.present();
+          }
+        }
+      )
     });
 
-    await alert.present();
   }
 }

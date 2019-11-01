@@ -73,5 +73,9 @@ export class UserDbService {
       user_subject: user_subject,
       user_message: user_message
     }
+    const body = JSON.stringify(contact);
+    return this.http.post(this.contact, body, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json')
+    });
   }
 }
