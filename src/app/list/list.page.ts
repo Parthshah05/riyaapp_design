@@ -23,14 +23,13 @@ export class ListPage implements OnInit {
   products: Products_Category_Classs[] = [];
   productsDup: Products_Category_Classs[] = [];
 
-  public items: Array<{ title: string; categ: string; qty: number }> = [];
   constructor(private activated_route: ActivatedRoute,
     private productsDB: ProductsDbService,
     private cartDB: CartDbService,
     private storage: Storage,
     private alertCtrl: AlertController,
     private toastController: ToastController) {
-    console.log(activated_route.snapshot.paramMap.get('cat'));
+
     this.category = 'products';
   }
 
@@ -56,7 +55,7 @@ export class ListPage implements OnInit {
   }
   onInc(prod: Products_Category_Classs) {
     prod.qty++;
-    
+
   }
   onDec(prod: Products_Category_Classs) {
     if (prod.qty > 0) {
@@ -111,8 +110,4 @@ export class ListPage implements OnInit {
       }
     })
   }
-  // add back when alpha.4 is out
-  // navigate(item) {
-  //   this.router.navigate(['/list', JSON.stringify(item)]);
-  // }
 }

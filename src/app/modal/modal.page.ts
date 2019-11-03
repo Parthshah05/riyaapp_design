@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { User } from '../Classes/user_class';
 import { NavParams, ModalController, LoadingController, ToastController, NavController } from '@ionic/angular';
 import { UserDbService } from '../providers/user-db/user-db.service';
 import { Storage } from '@ionic/storage';
 import { UserEdit } from '../shared/User_class';
+import { User_Class } from "../shared/User_class";
 
 @Component({
   selector: 'app-modal',
@@ -11,7 +11,7 @@ import { UserEdit } from '../shared/User_class';
   styleUrls: ['./modal.page.scss'],
 })
 export class ModalPage implements OnInit {
-  @Input() user: User;
+  @Input() user: User_Class;
   @Input() action: string;
   old_password: string = "";
   new_password: string = "";
@@ -46,8 +46,6 @@ export class ModalPage implements OnInit {
     });
   }
   dismiss() {
-    // using the injected ModalController this page
-    // can "dismiss" itself and optionally pass back data
     this.modalCtrl.dismiss({
       'dismissed': true
     });
@@ -81,7 +79,6 @@ export class ModalPage implements OnInit {
     this.userDb.editUser(new UserEdit(this.email, this.name, this.company, this.mobile))
       .subscribe(
         (data: any) => {
-          console.log(data.result);
           if (data.result === true) {
             this.presentToast1();
             this.modalCtrl.dismiss(data);
@@ -94,16 +91,6 @@ export class ModalPage implements OnInit {
 
         }
       );
-    /* this.udata.updateUser(this.user.user_id, this.user).subscribe(
-      (data) => {
-        console.log(data);
-        this.presentToast1();
-        this.modalCtrl.dismiss(data);
-      },
-      function (err) { console.log(err); },
-      function () {
-      }
-    ); */
   }
 
   async loading2() {
@@ -142,31 +129,11 @@ export class ModalPage implements OnInit {
 
           }
         )
-      /* this.udata.changePass(this.user).subscribe(
-        (data) => {
-          console.log(data);
-          this.presentToast2();
-          this.modalCtrl.dismiss(data);
-        },
-        function (err) { console.log(err); },
-        function () {
-
-        }
-      ); */
     }
     else {
       alert("password can not be empty");
       return;
     }
-  }
-
-  matchOldPass() {
-    console.log("in the matcholdpass");
-
-  }
-  matchNewPass() {
-    console.log("in the matchnewpass");
-
   }
 
 }

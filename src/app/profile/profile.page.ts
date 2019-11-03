@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from '../Classes/user_class';
 import { UserDbService } from '../providers/user-db/user-db.service';
 import { LoadingController, ModalController } from '@ionic/angular';
 import { ModalPage } from '../modal/modal.page';
@@ -23,9 +22,6 @@ export class ProfilePage implements OnInit {
     public modalController: ModalController,
     private storage: Storage,
     private userDb: UserDbService) {
-
-
-
   }
 
   async loading() {
@@ -71,20 +67,6 @@ export class ProfilePage implements OnInit {
         }
       );
     });
-
-
-
-    /* this.user_db.getUser(this.id).subscribe(
-      (u: User[]) => {
-        for (let item of u) {
-          this.user = item;
-          this.email = item.user_email;
-          this.name = item.user_name;
-          this.mobile = item.user_contact;
-          this.company = item.user_company_name;
-        }
-      } 
-    )*/
   }
 
 }

@@ -21,10 +21,10 @@ const routes: Routes = [
   },
   { path: 'cart', loadChildren: './cart/cart.module#CartPageModule' },
   { path: 'login', loadChildren: './login/login.module#LoginPageModule' },
-  { path: 'signup', loadChildren: './signup/signup.module#SignupPageModule' },
   { path: 'contact', loadChildren: './contact/contact.module#ContactPageModule' },
   { path: 'profile', loadChildren: './profile/profile.module#ProfilePageModule' },
-  { path: 'modal', loadChildren: './modal/modal.module#ModalPageModule' },  { path: 'past-orders', loadChildren: './past-orders/past-orders.module#PastOrdersPageModule' },
+  { path: 'modal', loadChildren: './modal/modal.module#ModalPageModule' },
+  { path: 'past-orders', loadChildren: './past-orders/past-orders.module#PastOrdersPageModule' },
   { path: 'logout', loadChildren: './logout/logout.module#LogoutPageModule' }
 
 ];

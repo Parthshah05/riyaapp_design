@@ -5,6 +5,7 @@ import { Cart_Class } from '../shared/Cart_class';
 import { Storage } from '@ionic/storage';
 import { isNullOrUndefined } from 'util';
 import { async } from '@angular/core/testing';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -17,9 +18,12 @@ export class CartPage implements OnInit {
 
   cart: Cart_Class[] = [];
   user_id;
+  showList: boolean = false;
+
   constructor(public alertCtrl: AlertController,
     private storage: Storage,
     private cartDB: CartDbService,
+    private route: Router,
     public toastController: ToastController) {
     this.qty = 1;
   }
@@ -28,25 +32,34 @@ export class CartPage implements OnInit {
   ngOnInit() {
     this.storage.get('user_id').then((val) => {
       this.user_id = val;
-      this.cartDB.getCartItems(this.user_id).subscribe(
-        (data: any) => {
-          this.cart = data;
-        },
-        (err) => {
-          console.log(err);
-        },
-        () => {
+      if (isNullOrUndefined(this.user_id)) {
+        this.route.navigateByUrl('/login');
+      }
+      else {
+        this.cartDB.getCartItems(this.user_id).subscribe(
+          (data: any) => {
+            this.cart = data;
+            if (this.cart[0] == undefined) {
+              this.showList = true;
+            } else {
+              this.showList = false;
+            }
+          },
+          (err) => {
+            console.log(err);
+          },
+          () => {
 
-        }
-      );
-    })
+          }
+        );
+      }
+    });
   }
   onDec(cart) {
     if (cart.product_qty - 1 < 1) {
       cart.product_qty = 1;
     } else {
       cart.product_qty -= 1;
-      //console.log(‘2->’+this.qty);
     }
 
     this.storage.get('user_id').then((val) => {
@@ -102,5 +115,39 @@ export class CartPage implements OnInit {
       )
     });
 
+  }
+
+  async onempty() {
+    const alert = await this.alertCtrl.create({
+      header: 'Empty Cart!',
+      message: 'Are you sure you want to empty cart???',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+          }
+        }, {
+          text: 'Okay',
+          handler: () => {
+            this.storage.get('user_id').then(
+              (val) => {
+                this.user_id = val;
+                this.cartDB.deleteCart(this.user_id).subscribe(
+                  (data: any) => {
+                    if (data.result === true) {
+                      this.ngOnInit();
+                    }
+                  }
+                );
+              }
+            );
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 }

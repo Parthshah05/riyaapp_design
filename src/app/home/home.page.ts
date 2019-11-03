@@ -12,24 +12,10 @@ export class HomePage implements OnInit {
   @ViewChild('Slides', null) slides: IonSlides;
   @ViewChild('Slides2', null) slides2: IonSlides;
 
-  menu = "withoutLogout";
-  user_id;
   constructor(public route: Router,
     private storage: Storage) { }
 
   ngOnInit() {
-    console.log('1');
-    this.storage.get('user_id').then((val) => {
-      console.log('user_id ' + val + ' home');
-      this.user_id = val;
-      console.log(isNullOrUndefined(this.user_id));
-      if (!isNullOrUndefined(this.user_id)) {
-        this.menu = "withLogout";
-      }
-      else {
-        this.menu = "withoutLogout";
-      }
-    });
   }
 
   last() {

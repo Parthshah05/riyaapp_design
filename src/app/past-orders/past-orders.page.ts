@@ -14,6 +14,7 @@ export class PastOrdersPage implements OnInit {
 
   orders: Past_Orders[] = [];
   user_id;
+  showList: boolean = false;
 
   constructor(
     private storage: Storage,
@@ -37,6 +38,11 @@ export class PastOrdersPage implements OnInit {
         this.cartDB.getPastOrders(this.user_id).subscribe(
           (data: any) => {
             this.orders = data;
+            if (this.orders[0] == undefined) {
+              this.showList = true;
+            } else {
+              this.showList = false;
+            }
             console.log(this.orders);
           },
           (err) => {

@@ -8,51 +8,43 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-item *ngFor="let item of cart">
-    <ion-label>
-      <h2>{{item.product_name}}</h2>
-      <h3>Category : {{item.cat_name}}</h3>
-
-      <p style="color:darkslategray;float:left;" col-6>Qty : &nbsp;
-        <ion-icon name="remove-circle" (click)="onDec(item)" style="color:orange;font-size:22px;cursor:pointer;">
-        </ion-icon>
-        {{item.product_qty}}
-
-        <ion-icon name="add-circle" (click)="onInc(item)" style="color:orange;font-size:22px;cursor:pointer;">
-        </ion-icon>
-      </p>
-
-      <ion-button fill="outline" style="float:right;" color="dark" col-6>
-        <ion-icon style="color:orange;font-size:23px;" name="close-circle"></ion-icon>
-        <font style="padding-left:10px;color:darkslategray">Remove</font>
-      </ion-button>
-    </ion-label>
+  <ion-item [hidden]="!showList">
+    <ion-label>Cart is Empty!!</ion-label>
   </ion-item>
+  <ion-list [hidden]="showList">
+    <ion-item *ngFor="let item of cart">
+      <ion-label>
+        <h2>{{item.product_name}}</h2>
+        <h3>Category : {{item.cat_name}}</h3>
 
-  <ion-item>
-    <ion-label>
-      <h2>Samosa</h2>
-      <h3>Category : Snacks</h3>
+        <p style="color:darkslategray;float:left;" col-6>Qty : &nbsp;
+          <ion-icon name="remove-circle" (click)="onDec(item)" style="color:orange;font-size:22px;cursor:pointer;">
+          </ion-icon>
+          {{item.product_qty}}
 
-      <p style="color:darkslategray;float:left;" col-6>Qty : &nbsp;
-        <ion-icon name="remove-circle" (click)="onDec()" style="color:orange;font-size:22px;cursor:pointer;">
-        </ion-icon>
-        {{qty}}
+          <ion-icon name="add-circle" (click)="onInc(item)" style="color:orange;font-size:22px;cursor:pointer;">
+          </ion-icon>
+        </p>
 
-        <ion-icon name="add-circle" (click)="onInc()" style="color:orange;font-size:22px;cursor:pointer;">
-        </ion-icon>
-      </p>
-
-      <ion-button fill="outline" style="float:right;" color="dark" col-6>
-        <ion-icon style="color:orange;font-size:23px;" name="close-circle"></ion-icon>
-        <font style="padding-left:10px;color:darkslategray">Remove</font>
-      </ion-button>
-    </ion-label>
-  </ion-item>
+        <ion-button fill="outline" style="float:right;" color="dark" col-6>
+          <ion-icon style="color:orange;font-size:23px;" name="close-circle"></ion-icon>
+          <font style="padding-left:10px;color:darkslategray">Remove</font>
+        </ion-button>
+      </ion-label>
+    </ion-item>
+  </ion-list>
   <br>
-  <ion-button expand='block' fill='outline' color="warning" style="color:orange;height:38px;" (click)="onqt()">
+  <ion-button expand='block' fill='outline' color="warning" [disabled]="cart.length==0"
+    style="color:orange;height:38px;" (click)="onqt()">
     Get Quotes&nbsp;&nbsp;
     <ion-icon name="Send"></ion-icon>
+  </ion-button>
+
+  <br>
+  <ion-button expand='block' fill='outline' color="warning" [disabled]="cart.length==0"
+    style="color:orange;height:38px;" (click)="onempty()">
+    Empty Cart&nbsp;&nbsp;
+    <ion-icon name="trash"></ion-icon>
   </ion-button>
 
 </ion-content>

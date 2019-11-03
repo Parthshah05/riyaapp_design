@@ -66,14 +66,6 @@ export class LoginPage implements OnInit {
   loginForm: FormGroup;
   signUpForm: FormGroup;
 
-  s_email = '';
-  s_password = '';
-  mobile = null;
-  name = '';
-  cname = '';
-
-  menu = "withoutLogout";
-
   ngOnInit() {
 
   }
@@ -82,44 +74,44 @@ export class LoginPage implements OnInit {
   }
 
   onSubmitLogin() {
-    console.log('email:', this.loginForm.get('email').value);
-    console.log('password:', this.loginForm.get('password').value);
 
-    this.userDB.loginUser(this.loginForm.get('email').value, this.loginForm.get('password').value).subscribe(
-      async (data: any) => {
-        console.log(data);
-        if (data.length == 1) {
-          const t1 = await this.toast.create({
-            message: "Successfull Login!",
-            duration: 1000,
-            showCloseButton: true,
-            closeButtonText: 'Okay',
-            color: 'success'
-          });
-          console.log(data[0].user_id);
-          t1.present();
-          this.storage.set('user_id', data[0].user_id);
-          this.events.publish('user:loggedin');
-          this.route.navigateByUrl('/home');
-        }
-        else {
-          const t2 = await this.toast.create({
-            message: "Invalid User Name or Password!",
-            duration: 1000,
-            showCloseButton: true,
-            closeButtonText: 'Okay',
-            color: 'danger'
-          });
-          t2.present();
-        }
-      },
-      (err) => {
-        console.log(err);
-      },
-      () => {
+    this.userDB.loginUser(
+      this.loginForm.get('email').value,
+      this.loginForm.get('password').value).subscribe(
+        async (data: any) => {
 
-      }
-    )
+          if (data.length == 1) {
+            const t1 = await this.toast.create({
+              message: "Successfull Login!",
+              duration: 1000,
+              showCloseButton: true,
+              closeButtonText: 'Okay',
+              color: 'success'
+            });
+
+            t1.present();
+            this.storage.set('user_id', data[0].user_id);
+            this.events.publish('user:loggedin');
+            this.route.navigateByUrl('/home');
+          }
+          else {
+            const t2 = await this.toast.create({
+              message: "Invalid User Name or Password!",
+              duration: 1000,
+              showCloseButton: true,
+              closeButtonText: 'Okay',
+              color: 'danger'
+            });
+            t2.present();
+          }
+        },
+        (err) => {
+          console.log(err);
+        },
+        () => {
+
+        }
+      )
 
   }
 
@@ -136,7 +128,7 @@ export class LoginPage implements OnInit {
       comp,
       cont)).subscribe(
         async (data: any) => {
-          console.log(data);
+
           if (data.length == 1) {
             if (data[0].result === "true") {
               let alert = await this.alertCtrl.create({
@@ -174,14 +166,13 @@ export class LoginPage implements OnInit {
         }
       ],
 
-      //message: 'This is an alert message.',
       buttons: [
         {
           text: 'Proceed',
           handler: data => {
             this.userDB.verifyUser(data.name1).subscribe(
               async (data: any) => {
-                console.log(data);
+
                 if (data.result === true) {
                   let t1 = await this.toast.create({
                     message: 'User Verified Successfully! Please Login!',
