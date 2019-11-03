@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Platform, ModalController, MenuController, AlertController } from '@ionic/angular';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Platform, ModalController, MenuController, AlertController, Events } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Router } from '@angular/router';
@@ -9,6 +9,7 @@ import { Storage } from '@ionic/storage';
 import { isNumber } from 'util';
 import { ProductsDbService } from './providers/products-db/products-db.service';
 
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -16,6 +17,7 @@ import { ProductsDbService } from './providers/products-db/products-db.service';
 })
 
 export class AppComponent implements OnInit {
+
 
   public appPages1 = [
     {
@@ -70,6 +72,11 @@ export class AppComponent implements OnInit {
       title: 'Contact Us',
       url: '/contact',
       icon: 'call'
+    },
+    {
+      title: 'Past Orders',
+      url: '/past-orders',
+      icon: 'list-box'
     }/* ,
     {
       title: 'Logout',
@@ -78,7 +85,7 @@ export class AppComponent implements OnInit {
     } */
   ];
 
-
+  appPages: Array<{ title: string, url: string, icon: string }>;
 
   constructor(
     private platform: Platform,
@@ -89,34 +96,117 @@ export class AppComponent implements OnInit {
     private storage: Storage,
     private menuCtrl: MenuController,
     private alertController: AlertController,
-    private productService: ProductsDbService
+    private productService: ProductsDbService,
+    private events: Events
   ) {
+
     this.initializeApp();
+
+    this.appPages = [
+      {
+        title: 'Home',
+        url: '/home',
+        icon: 'home'
+      },
+      {
+        title: 'Our Products',
+        url: '/list',
+        icon: 'list'
+      },
+      {
+        title: 'Cart',
+        url: '/cart',
+        icon: 'cart'
+      },
+      {
+        title: 'Contact Us',
+        url: '/contact',
+        icon: 'call'
+      },
+      {
+        title: 'Login',
+        url: '/login',
+        icon: 'person-add'
+      }
+    ];
+
+    this.events.subscribe('user:loggedin', () => {
+      this.appPages = [
+        {
+          title: 'Home',
+          url: '/home',
+          icon: 'home'
+        },
+        {
+          title: 'Our Products',
+          url: '/list',
+          icon: 'list'
+        },
+        {
+          title: 'Cart',
+          url: '/cart',
+          icon: 'cart'
+        },
+        {
+          title: 'My Profile',
+          url: '/profile',
+          icon: 'contact'
+        },
+        {
+          title: 'Contact Us',
+          url: '/contact',
+          icon: 'call'
+        },
+        {
+          title: 'Past Orders',
+          url: '/past-orders',
+          icon: 'list-box'
+        },
+        {
+          title: 'Logout',
+          url: '/logout',
+          icon: 'log-out'
+        }
+      ]
+    });
+
+    this.events.subscribe('user:loggedout', () => {
+      this.appPages = [
+        {
+          title: 'Home',
+          url: '/home',
+          icon: 'home'
+        },
+        {
+          title: 'Our Products',
+          url: '/list',
+          icon: 'list'
+        },
+        {
+          title: 'Cart',
+          url: '/cart',
+          icon: 'cart'
+        },
+        {
+          title: 'Contact Us',
+          url: '/contact',
+          icon: 'call'
+        },
+        {
+          title: 'Login',
+          url: '/login',
+          icon: 'person-add'
+        }
+      ];
+    });
+
 
   }
 
   ngOnInit() {
     var user_id = "";
     this.productService.GetAllProducts();
-    this.storage.get('user_id').then((val) => {
-      console.log('user_id', val);
-      user_id = val;
-      if (!isNumber(user_id)) {
-        /* this.menuCtrl.close('withoutLogout'); */
-        this.menuCtrl.enable(true, 'withLogout');
-        this.menuCtrl.open('withLogout');
-        /* this.menuCtrl.close('withoutLogout');
-        this.menuCtrl.open('withLogout'); */
-      }
-      else {
-        /* this.menuCtrl.close('withLogout'); */
-        this.menuCtrl.enable(true, 'withoutLogout');
-        this.menuCtrl.open('withoutLogout');
-
-        /* this.menuCtrl.close('withLogout');
-        this.menuCtrl.open('withoutLogout'); */
-      }
-    });
+    
   }
 
   initializeApp() {

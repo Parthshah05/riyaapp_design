@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '../../../node_modules/@angular/router';
-import { ToastController } from '@ionic/angular';
+import { ToastController, Events } from '@ionic/angular';
 import { AlertController } from "@ionic/angular";
 
 import { Storage } from "@ionic/storage";
@@ -24,7 +24,8 @@ export class LoginPage implements OnInit {
     private userDB: UserDbService,
     private toast: ToastController,
     private storage: Storage,
-    private alertCtrl: AlertController) {
+    private alertCtrl: AlertController,
+    private events: Events) {
 
     this.loginForm = this.formBuilder.group({
       'email': new FormControl('', Validators.compose([
@@ -98,6 +99,7 @@ export class LoginPage implements OnInit {
           console.log(data[0].user_id);
           t1.present();
           this.storage.set('user_id', data[0].user_id);
+          this.events.publish('user:loggedin');
           this.route.navigateByUrl('/home');
         }
         else {
