@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-     <ion-buttons slot="start">
+    <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>CONTACT US</ion-title>
@@ -8,63 +8,78 @@
 </ion-header>
 
 <ion-content scroll="true">
-
-
   <div class="splash-bg">
 
   </div>
   <div class="splace-info" padding>
-    
-    
-    
-    <ion-list>
+    <form [formGroup]="contact">
 
-      <ion-item>
-        <ion-input style="font-size:17px;" placeholder="Name" type="text" [(ngModel)]="name" [required]="true"></ion-input>
-      </ion-item>
+      <ion-list>
+        <ion-item>
+          <ion-input style="font-size:17px;" placeholder="Name" id="name" type="text" formControlName="name"
+            [required]="true">
+          </ion-input>
+        </ion-item>
+        <div *ngIf="!contact.get('name').valid &&
+        (contact.get('name').dirty || contact.get('name').touched)" class="error-messages">
+          Please Enter Your Name.
+        </div>
 
-     
+        <ion-item>
+          <ion-input style="font-size:17px;" placeholder="Email ID" type="email" id="email" formControlName="email"
+            [required]="true">
+          </ion-input>
+        </ion-item>
+        <div *ngIf="!contact.get('email').valid &&
+        (contact.get('email').dirty || contact.get('email').touched)" class="error-messages">
+          Please Enter Email-ID.
+        </div>
 
-      <ion-item>
-        <ion-input style="font-size:17px;" placeholder="Email ID" type="email" [(ngModel)]="s_email" [required]="true"></ion-input>
-      </ion-item>
+        <ion-item>
+          <ion-input [clearInput]="true" style="font-size:17px;" placeholder="Subject" id="subject" type="text"
+            formControlName="subject" [required]="true"></ion-input>
+        </ion-item>
+        <div *ngIf="!contact.get('subject').valid &&
+        (contact.get('subject').dirty || contact.get('subject').touched)" class="error-messages">
+          Subject is required.
+        </div>
 
-      <ion-item>
-        <ion-input [clearInput]="true" style="font-size:17px;" placeholder="Subject" type="text" [(ngModel)]="subject"
-          [required]="true"></ion-input>
-      </ion-item>
-    
-      <ion-item>
-        <ion-textarea clearOnEdit="true" style="font-size:17px;" placeholder="Your Message" type="text" [(ngModel)]="message"  [required]="true"></ion-textarea>
-      </ion-item>
+        <ion-item>
+          <ion-textarea clearOnEdit="true" style="font-size:17px;" placeholder="Your Message" type="text"
+            formControlName="message" id="message" [required]="true"></ion-textarea>
+        </ion-item>
+        <div *ngIf="!contact.get('message').valid &&
+        (contact.get('message').dirty || contact.get('message').touched)" class="error-messages">
+          Message is required.
+        </div>
 
-    </ion-list>
+      </ion-list>
+    </form>
+
     <br>
-    <ion-button expand='block' fill='outline' color="warning" style="color:orange;height:38px;" (click)="onContact()">
+    <ion-button expand='block' fill='outline' color="warning" style="color:orange;height:38px;"
+      [disabled]="contact.invalid" (click)="onContact()">
       Send&nbsp;&nbsp;
       <ion-icon name="Send"></ion-icon>
     </ion-button>
-    
+
     <br><br>
-    <!-- <fieldset style="border:0px;border-top:2px solid lightgray;">
-      <legend style="font-size:20px;text-align:center;padding-bottom:0px;font-weight:bold;text-shadow:1px 1px gray;color:orange">CONTACT INFO</legend>
-    </fieldset> -->
 
     <ion-card>
       <ion-card-header>
         <ion-card-title style="color:orange;height:38px;">CONTACT INFO</ion-card-title>
       </ion-card-header>
-    
+
       <ion-card-content>
-        
-    <p>Riya Foods Ltd.</p>
-    <p>34 Silicon Business Center,Greenford UB6 7JZ</p>
-    <p>Mobile: 020 8998 4665</p>
-    <p>Fax:</p>
-    <p>Email: rkishor59@yahoo.co.uk</p>
+
+        <p>Riya Foods Ltd.</p>
+        <p>34 Silicon Business Center,Greenford UB6 7JZ</p>
+        <p>Mobile: 020 8998 4665</p>
+        <p>Fax:</p>
+        <p>Email: rkishor59@yahoo.co.uk</p>
       </ion-card-content>
     </ion-card>
-    
-  </div> 
+
+  </div>
 
 </ion-content>

@@ -11,8 +11,6 @@
 
 
 <ion-content scroll="true">
-
-
   <div class="splash-bg">
 
   </div>
@@ -35,14 +33,12 @@
           type="password">
         </ion-input>
       </ion-item>
+
       <div *ngIf="!loginForm.get('password').valid &&
       (loginForm.get('password').dirty || loginForm.get('password').touched)" class="error-messages">
         Please Enter a Password.
       </div>
-      <div *ngIf="!loginForm.get('password').minlength &&
-      (loginForm.get('password').dirty || loginForm.get('password').touched)" class="error-messages">
-        Password must be at least 6 characters long.
-      </div>
+
 
       <ion-button expand='block' fill='outline' color="warning" style="color:orange;height:38px;" type="submit"
         [disabled]="loginForm.invalid" (click)="onSubmitLogin()">
@@ -67,10 +63,6 @@
       (signUpForm.get('fname').dirty || signUpForm.get('fname').touched)" class="error-messages">
         Name is Required.
       </div>
-      <!-- <div *ngIf="signUpForm.get('fname').errors.required &&
-      (signUpForm.get('fname').dirty || signUpForm.get('fname').touched)">
-        Name is Required.
-      </div> -->
 
       <ion-item>
         <ion-input required placeholder="Company Name" formControlName="company" type="text" style="font-size:17px;">
@@ -94,10 +86,6 @@
         <ion-input required placeholder="Password" formControlName="s_password" type="password" style="font-size:17px;">
         </ion-input>
       </ion-item>
-      <div *ngIf="signUpForm.get('s_password').minlength &&
-      (signUpForm.get('s_password').dirty || signUpForm.get('s_password').touched)" class="error-messages">
-        Password must be at least 6 characters long.
-      </div>
       <div *ngIf="!signUpForm.get('s_password').valid &&
       (signUpForm.get('s_password').dirty || signUpForm.get('s_password').touched)" class="error-messages">
         Password is Required.
@@ -118,50 +106,13 @@
         <ion-icon name="person-add"></ion-icon>
       </ion-button>
 
+      <ion-button expand='block' fill='outline' color="warning" style="color:orange;height:38px;" type="submit"
+        (click)="onotp()">
+        Verify OTP
+        <ion-icon name="check"></ion-icon>
+      </ion-button>
 
     </form>
-
-
-    <!-- <ion-list>
-      <ion-item>
-        <ion-input style="font-size:17px;" placeholder="Name" type="text" [(ngModel)]="name" [required]="true">
-        </ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-input style="font-size:17px;" placeholder="Company Name" type="text" [(ngModel)]="cname" [required]="true">
-        </ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-input style="font-size:17px;" placeholder="Email ID" type="email" [(ngModel)]="s_email" [required]="true">
-        </ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-input [clearInput]="true" style="font-size:17px;" placeholder="Password" type="password"
-          [(ngModel)]="s_password" [required]="true"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-input [clearInput]="true" style="font-size:17px;" placeholder="Mobile No." type="number"
-          [(ngModel)]="mobile" [required]="true"></ion-input>
-      </ion-item>
-
-    </ion-list> -->
-
-    <!-- <ion-button expand='block' fill='outline' color="warning" style="color:orange;height:38px;" (click)="onSignup()">
-      SIGNUP&nbsp;&nbsp;
-      <ion-icon name="person-add"></ion-icon>
-
-    </ion-button>
-    <ion-button expand='block' fill='outline' color="warning" style="color:orange;height:38px;" (click)="onotp()">
-      OTP&nbsp;&nbsp;
-      <ion-icon name="person-add"></ion-icon>
-    </ion-button>
-  </div> 
-
-    </ion-button> -->
   </div>
 
 

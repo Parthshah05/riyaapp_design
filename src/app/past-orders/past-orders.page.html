@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Past Orders</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-item [hidden]="!showList">
+    <ion-label>You have ordered anything!</ion-label>
+  </ion-item>
+  <ion-list [hidden]="showList">
+    <ion-item *ngFor="let item of orders">
+      <ion-label>
+        <h2>{{item.product_name}}</h2>
+        <h3>Category : {{item.cat_name}}</h3>
+        <h3>Date : {{item.order_date}}</h3>
+        <p style="color:darkslategray;float:left;" col-6>Qty : &nbsp;
+          {{item.product_qty}}
+        </p>
+        <br>
+
+        <ion-button fill="outline" style="float:right;" color="dark" col-6 (click)="addtoCart(item)">
+          <ion-icon style="color:orange;font-size:23px;" name="cart"></ion-icon>
+          <font style="padding-left:10px;color:darkslategray">Add To Cart</font>
+        </ion-button>
+
+      </ion-label>
+    </ion-item>
+  </ion-list>
+  <br>
+
+</ion-content>

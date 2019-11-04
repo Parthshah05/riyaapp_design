@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { UserDbService } from './user-db.service';
+import { CartDbService } from './cart-db.service';
 
-describe('UserDbService', () => {
+describe('CartDbService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: UserDbService = TestBed.get(UserDbService);
+    const service: CartDbService = TestBed.get(CartDbService);
     expect(service).toBeTruthy();
   });
 });

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from '../Classes/user_class';
-import { UserDbService } from '../user-db.service';
+import { UserDbService } from '../providers/user-db/user-db.service';
 import { LoadingController, ModalController } from '@ionic/angular';
 import { ModalPage } from '../modal/modal.page';
+import { Storage } from '@ionic/storage';
+import { User_Class } from '../shared/User_class';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
@@ -14,10 +15,13 @@ export class ProfilePage implements OnInit {
   mobile = "";
   company = "";
   id = 6;  //user id
-  user: User;
+  user: User_Class;
 
-  constructor(public user_db: UserDbService, public load: LoadingController, public modalController: ModalController) {
-
+  user_id: "";
+  constructor(public load: LoadingController,
+    public modalController: ModalController,
+    private storage: Storage,
+    private userDb: UserDbService) {
   }
 
   async loading() {
@@ -45,18 +49,24 @@ export class ProfilePage implements OnInit {
   ngOnInit() {
     this.loading().then(a => console.log("loading presented."));
 
-    this.user_db.getUser(this.id).subscribe(
-      (u: User[]) => {
-        for (let item of u) {
-          this.user = item;
-          this.email = item.user_email;
-          this.name = item.user_name;
-          this.mobile = item.user_contact;
-          this.company = item.user_company_name;
-          this.load.dismiss().then(a => console.log("Loading dismissed."));
+    this.storage.get('user_id').then((val) => {
+      this.user_id = val;
+      this.userDb.getUserById(this.user_id).subscribe(
+        (data: User_Class[]) => {
+          this.user = data[0];
+          this.email = this.user.user_email;
+          this.company = this.user.user_company_name;
+          this.mobile = this.user.user_contact;
+          this.name = this.user.user_name;
+        },
+        (err) => {
+          console.log(err);
+        },
+        () => {
+          this.load.dismiss();
         }
-      }
-    )
+      );
+    });
   }
 
 }
