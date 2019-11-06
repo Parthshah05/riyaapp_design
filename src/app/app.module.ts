@@ -1,3 +1,4 @@
+import { CacheModule } from 'ionic-cache-observable';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
@@ -26,7 +27,8 @@ import { from } from 'rxjs';
     HttpClientModule,
     ModalPageModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    CacheModule
   ],
   providers: [
     StatusBar,

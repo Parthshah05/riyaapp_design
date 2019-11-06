@@ -4,12 +4,14 @@ import { LoadingController, NavController, NavParams, AlertController, ToastCont
 import { NavComponent } from '../../../node_modules/@ionic/core';
 import { Router, RouterModule, ActivatedRoute } from '../../../node_modules/@angular/router';
 
-import { ProductsDbService } from '../providers/products-db/products-db.service'
+import { ProductsDbService } from '../providers/products-db/products-db.service';
 import { Products_Category_Classs } from "../shared/Products_Category_class";
 import { CartDbService } from '../providers/cart-db/cart-db.service';
 import { Storage } from '@ionic/storage';
 import { isNumber, isNullOrUndefined } from 'util';
 
+import { Observable } from '../../../node_modules/rxjs/internal/observable';
+import { CacheService,Cache } from 'ionic-cache-observable';
 
 @Component({
   selector: 'app-list',
@@ -19,7 +21,10 @@ import { isNumber, isNullOrUndefined } from 'util';
 export class ListPage implements OnInit {
   category = 'products';
   qty: number = 1;
-
+  cat_id:number=0;
+  public data$: Observable<Products_Category_Classs[]>;
+  private cache: Cache<Products_Category_Classs[]>;
+  
   products: Products_Category_Classs[] = [];
   productsDup: Products_Category_Classs[] = [];
 
@@ -28,30 +33,65 @@ export class ListPage implements OnInit {
     private cartDB: CartDbService,
     private storage: Storage,
     private alertCtrl: AlertController,
-    private toastController: ToastController) {
+    private toastController: ToastController,
+    private cacheService:CacheService) {
 
     this.category = 'products';
   }
-
+  async ionViewWillEnter(){
+    await this.cacheService.get('products').mergeMap((cache:Cache<Products_Category_Classs[]>)=>cache.get())
+    .subscribe((data)=>{
+      this.products=data;
+      this.products.forEach(product => { product.qty = 1; });
+    },(err)=>{
+      console.log(" error ",err);
+    },()=>{
+      console.log(" completed ");
+    });
+    await this.cacheService.get('products').mergeMap((cache:Cache<Products_Category_Classs[]>)=>
+        cache.refresh()
+        ).subscribe((data)=>{
+      this.products=data;
+      this.products.forEach(product => {product.qty = 1});
+    });
+  }
   async ngOnInit() {
+    // await this.cacheService.get('products').mergeMap((cache:Cache<Products_Category_Classs[]>)=>cache.get())
+    // .subscribe((data)=>{
+    //   this.products=data;
+    //   this.products.forEach(product => { product.qty = 1; });
+    // },(err)=>{
+    //   console.log(" error ",err);
+    // },()=>{
+    //   console.log(" completed ");
+    // });
+    // if (this.activated_route.snapshot.paramMap.get('cat') != null) {
+    //   this.category = this.activated_route.snapshot.paramMap.get('cat');
+    //   this.productsDup = this.products;
+    //   var cat_id;
+    //   if (this.category === 'sweets') {
+    //     cat_id = 1;
+    //   }
+    //   else if (this.category === 'snacks') {
+    //     cat_id = 2;
+    //   }
+    //   this.products = this.productsDB.GetProductsByCategory(cat_id);
+    //   this.products.forEach(product => { product.qty = 1; });
+    // }
+    // else {
+    //   this.products = this.productsDB.GetAllProducts();
+    //   this.productsDup = this.products;
+    //   this.products.forEach(product => { product.qty = 1; });
+    // }
     if (this.activated_route.snapshot.paramMap.get('cat') != null) {
-      this.category = this.activated_route.snapshot.paramMap.get('cat');
-      this.productsDup = this.products;
-      var cat_id;
-      if (this.category === 'sweets') {
-        cat_id = 1;
+        this.category = this.activated_route.snapshot.paramMap.get('cat');
+        if (this.category === 'sweets') {
+          this.cat_id = 1;
+        }
+        else if (this.category === 'snacks') {
+          this.cat_id = 2;
+        }
       }
-      else if (this.category === 'snacks') {
-        cat_id = 2;
-      }
-      this.products = this.productsDB.GetProductsByCategory(cat_id);
-      this.products.forEach(product => { product.qty = 1; });
-    }
-    else {
-      this.products = this.productsDB.GetAllProducts();
-      this.productsDup = this.products;
-      this.products.forEach(product => { product.qty = 1; });
-    }
   }
   onInc(prod: Products_Category_Classs) {
     prod.qty++;

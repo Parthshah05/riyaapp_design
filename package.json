@@ -29,9 +29,11 @@
     "cordova-android": "^8.1.0",
     "cordova-ios": "^5.0.1",
     "core-js": "^2.5.4",
+    "ionic-cache-observable": "0.0.6",
     "rxjs": "~6.5.1",
     "tslib": "^1.9.0",
-    "zone.js": "~0.9.1"
+    "zone.js": "~0.9.1",
+    "rxjs-compat": "^6.5.3"
   },
   "devDependencies": {
     "@angular-devkit/architect": "~0.801.2",

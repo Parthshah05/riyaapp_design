@@ -14,7 +14,27 @@
   <ion-list>
     <ion-searchbar showCancelButton placeholder="Search {{category}}" (ionInput)="getItems($event)">
     </ion-searchbar>
-    <ion-item *ngFor="let prod of products">
+    <ng-container *ngFor="let prod of products">
+        <ion-item *ngIf="(cat_id==0) || (cat_id==prod.fk_cat_id)">
+        <ion-label>
+          <h2 style="font-size: 20px;">{{prod.product_name}}</h2>
+          <h3 style="font-size: 15px;color:darkslategray">Category : {{prod.cat_name}}</h3>
+          <p style="color:darkslategray;float:left;" col-6>Qty : &nbsp;
+            <ion-icon name="remove-circle" (click)="onDec(prod)" style="color:orange;font-size:22px;cursor:pointer;"
+              *ngIf="prod.qty > 1">
+            </ion-icon>
+            {{prod.qty}}
+            <ion-icon name="add-circle" (click)="onInc(prod)" style="color:orange;font-size:22px;cursor:pointer;">
+            </ion-icon>
+          </p>
+          <ion-button fill="outline" style="float:right;" color="dark" col-6 (click)="addtocart(prod)">
+            <ion-icon style="color:orange;font-size:23px;" name="cart"></ion-icon>
+            <font style="padding-left:10px;color:darkslategray">Add to Cart</font>
+          </ion-button>
+        </ion-label>
+      </ion-item>
+    </ng-container>
+    <!-- <ion-item *ngFor="let prod of products">
       <ion-label>
         <h2 style="font-size: 20px;">{{prod.product_name}}</h2>
         <h3 style="font-size: 15px;color:darkslategray">Category : {{prod.cat_name}}</h3>
@@ -31,7 +51,7 @@
           <font style="padding-left:10px;color:darkslategray">Add to Cart</font>
         </ion-button>
       </ion-label>
-    </ion-item>
+    </ion-item> -->
 
   </ion-list>
 

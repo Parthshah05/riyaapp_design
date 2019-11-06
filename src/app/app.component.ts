@@ -8,7 +8,9 @@ import { timer } from 'rxjs';
 import { ProductsDbService } from './providers/products-db/products-db.service';
 import { Storage } from '@ionic/storage';
 import { isNullOrUndefined } from 'util';
-
+import { CacheService,Cache } from 'ionic-cache-observable';
+import { Products_Category_Classs } from './shared/Products_Category_class';
+import { Observable } from '../../node_modules/rxjs/internal/observable';
 
 @Component({
   selector: 'app-root',
@@ -29,7 +31,8 @@ export class AppComponent implements OnInit {
     private alertController: AlertController,
     private productService: ProductsDbService,
     private events: Events,
-    private storage: Storage
+    private storage: Storage,
+    private cacheService: CacheService,
   ) {
 
     this.initializeApp();
@@ -136,7 +139,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.productService.GetAllProducts();
+    // this.productService.GetAllProducts();
     this.storage.get('user_id').then(
       (val) => {
         if (isNullOrUndefined(val)) {
@@ -170,5 +173,11 @@ export class AppComponent implements OnInit {
       });
       await alert.present();
     }, false);
+    const sourceData:Observable<Products_Category_Classs[]> = this.productService.GetAllProductsAnother();
+    // let productsObservable:Observable<Products_Category_Classs[]>;
+    this.cacheService.register('products',sourceData,true).mergeMap((cache:Cache<Products_Category_Classs[]>)=>cache.get())
+    .subscribe((data)=>{
+      console.log(" after registering in app.component.ts ",data);
+    });
   }
 }
