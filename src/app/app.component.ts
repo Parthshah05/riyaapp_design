@@ -12,6 +12,7 @@ import { CacheService,Cache } from 'ionic-cache-observable';
 import { Products_Category_Classs } from './shared/Products_Category_class';
 import { Observable } from '../../node_modules/rxjs/internal/observable';
 
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -158,7 +159,7 @@ export class AppComponent implements OnInit {
       this.statusBar.backgroundColorByHexString("#01528f");
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-
+      console.log('splash');
       timer(5000).subscribe(() => {
         this.route.navigateByUrl('/home');
       });
