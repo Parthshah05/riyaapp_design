@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController, ToastController } from '@ionic/angular';
+import { AlertController, ToastController, LoadingController } from '@ionic/angular';
 import { CartDbService } from '../providers/cart-db/cart-db.service';
 import { Cart_Class } from '../shared/Cart_class';
 import { Storage } from '@ionic/storage';
@@ -24,6 +24,7 @@ export class CartPage implements OnInit {
     private storage: Storage,
     private cartDB: CartDbService,
     private route: Router,
+    public loadingController: LoadingController,
     public toastController: ToastController) {
     this.qty = 1;
   }
@@ -98,23 +99,39 @@ export class CartPage implements OnInit {
   }
 
   onqt() {
-    this.storage.get('user_id').then((val) => {
-      this.user_id = val;
-      this.cartDB.checkoutCart(this.user_id).subscribe(
-        async (data: any) => {
-          if (data.reason === true) {
-            const alert = await this.alertCtrl.create({
-              header: 'Your Quatation',
-              message: 'We Got Your Requirement List.We Will Contact With You Within Some Time.',
-              buttons: ['OK']
-            });
+    this.storage.get('user_id').then(
+      async (val) => {
+        this.user_id = val;
 
-            await alert.present();
+        const loading = await this.loadingController.create({
+          message: 'Checking out.....',
+          spinner: 'circles'
+        });
+        await loading.present();
+
+        this.cartDB.checkoutCart(this.user_id).subscribe(
+          async (data: any) => {
+            loading.dismiss();
+            if (data.reason === true) {
+              const toast = await this.toastController.create({
+                message: 'We Got Your Requirement List.We Will Contact With You Within Some Time.',
+                duration: 3000,
+                showCloseButton: true,
+                color: 'primary'
+              });
+              toast.present();
+              this.route.navigateByUrl('/past-orders');
+            }
+          },
+          (err) => {
+            console.log(err);
+            loading.dismiss();
+          },
+          () => {
+            loading.dismiss();
           }
-        }
-      )
-    });
-
+        )
+      });
   }
 
   async onempty() {

@@ -10,7 +10,8 @@ import { Storage } from '@ionic/storage';
 import { isNullOrUndefined } from 'util';
 import { CacheService,Cache } from 'ionic-cache-observable';
 import { Products_Category_Classs } from './shared/Products_Category_class';
-import { Observable } from '../../node_modules/rxjs/internal/observable';
+// import { Observable } from '../../node_modules/rxjs/internal/observable';
+import { Observable } from '../../node_modules/rxjs/observable';
 
 
 @Component({
@@ -158,11 +159,14 @@ export class AppComponent implements OnInit {
       this.statusBar.show();
       this.statusBar.backgroundColorByHexString("#01528f");
       this.statusBar.styleDefault();
-      this.splashScreen.hide();
-      console.log('splash');
-      timer(5000).subscribe(() => {
-        this.route.navigateByUrl('/home');
-      });
+      setTimeout(()=>{
+        this.splashScreen.hide();
+      },3000);
+      // this.splashScreen.hide();
+      this.route.navigateByUrl('/home');
+      // timer(5000).subscribe(() => {
+      //   this.route.navigateByUrl('/home');
+      // });
 
     });
 

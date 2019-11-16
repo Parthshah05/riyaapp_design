@@ -10,7 +10,8 @@ import { CartDbService } from '../providers/cart-db/cart-db.service';
 import { Storage } from '@ionic/storage';
 import { isNumber, isNullOrUndefined } from 'util';
 
-import { Observable } from '../../../node_modules/rxjs/internal/observable';
+import { Observable } from '../../../node_modules/rxjs';
+// import { Observable } from '../../../node_modules/rxjs/observable';
 import { CacheService,Cache } from 'ionic-cache-observable';
 
 @Component({
@@ -54,6 +55,7 @@ export class ListPage implements OnInit {
       this.products=data;
       this.products.forEach(product => {product.qty = 1});
     });
+    this.productsDup=this.products;
   }
   async ngOnInit() {
     // await this.cacheService.get('products').mergeMap((cache:Cache<Products_Category_Classs[]>)=>cache.get())
