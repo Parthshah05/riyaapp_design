@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Cart_Update_Class } from 'src/app/shared/Cart_class';
 
 @Injectable({
   providedIn: 'root'
@@ -56,7 +57,12 @@ export class CartDbService {
       { headers: new HttpHeaders().set('Content-Type', 'application/json') }
     );
   }
-
+  deleteCartProduct(cart_update_obj:Cart_Update_Class){
+    const body = JSON.stringify(cart_update_obj);
+    return this.http.put(this.url, body,
+      { headers: new HttpHeaders().set('Content-Type', 'application/json') }
+    );
+  }
   getPastOrders(user_id) {
     return this.http.get(this.urlPast + '/' + user_id);
   }

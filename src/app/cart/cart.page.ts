@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, ToastController, LoadingController } from '@ionic/angular';
 import { CartDbService } from '../providers/cart-db/cart-db.service';
-import { Cart_Class } from '../shared/Cart_class';
+import { Cart_Class, Cart_Update_Class } from '../shared/Cart_class';
 import { Storage } from '@ionic/storage';
 import { isNullOrUndefined } from 'util';
 import { async } from '@angular/core/testing';
@@ -30,13 +30,18 @@ export class CartPage implements OnInit {
   }
 
 
-  ngOnInit() {
-    this.storage.get('user_id').then((val) => {
+  async ngOnInit() {
+    this.storage.get('user_id').then(async (val) => {
       this.user_id = val;
       if (isNullOrUndefined(this.user_id)) {
         this.route.navigateByUrl('/login');
       }
       else {
+        const loading = await this.loadingController.create({
+          message: 'Loading...',
+          spinner: 'circles'
+        });
+        await loading.present();
         this.cartDB.getCartItems(this.user_id).subscribe(
           (data: any) => {
             this.cart = data;
@@ -50,7 +55,7 @@ export class CartPage implements OnInit {
             console.log(err);
           },
           () => {
-
+            loading.dismiss();
           }
         );
       }
@@ -104,7 +109,7 @@ export class CartPage implements OnInit {
         this.user_id = val;
 
         const loading = await this.loadingController.create({
-          message: 'Checking out.....',
+          message: 'Checking out...',
           spinner: 'circles'
         });
         await loading.present();
@@ -166,5 +171,29 @@ export class CartPage implements OnInit {
     });
 
     await alert.present();
+  }
+  async onDelete(item:Cart_Class){
+      await this.storage.get('user_id').then((val)=>{
+        const obj=new Cart_Update_Class(val,item.product_id,"0");
+        this.cartDB.deleteCartProduct(obj).subscribe(
+          async (data: any) => {
+            let toast_text:string;
+            if (data.result === true) {
+              this.ngOnInit();
+              toast_text="Item successfully removed from the cart.";
+            }
+            else{
+              toast_text="Item can`t successfully removed from the cart.";
+            }
+            const toast = await this.toastController.create({
+              message: toast_text,
+              duration: 2000,
+              color: 'secondary'
+            });
+            toast.present();
+          }
+        );
+      });
+      
   }
 }

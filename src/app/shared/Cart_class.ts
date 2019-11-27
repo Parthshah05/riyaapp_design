@@ -10,3 +10,12 @@ export class Cart_Class {
 
     }
 }
+export class Cart_Update_Class {
+    constructor(
+        public user_id:string,
+        public product_id:string,
+        public product_qty:string
+    ) {
+
+    }
+}

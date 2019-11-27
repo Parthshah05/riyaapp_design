@@ -74,13 +74,13 @@ export class LoginPage implements OnInit {
   }
 
   onSubmitLogin() {
-
     this.userDB.loginUser(
       this.loginForm.get('email').value,
       this.loginForm.get('password').value).subscribe(
         async (data: any) => {
 
           if (data.length == 1) {
+            if(data[0].IsVerified=="1"){
             const t1 = await this.toast.create({
               message: "Successfull Login!",
               duration: 1000,
@@ -88,11 +88,75 @@ export class LoginPage implements OnInit {
               closeButtonText: 'Okay',
               color: 'success'
             });
-
-            t1.present();
             this.storage.set('user_id', data[0].user_id);
             this.events.publish('user:loggedin');
             this.route.navigateByUrl('/home');
+            t1.present();
+           
+            }
+            else{
+              let uid=data[0].user_id;
+              const alert = await this.alertController.create({
+                header: 'Enter OTP',
+                inputs: [
+                  {
+                    name: 'name1',
+                    type: 'number',
+                    placeholder: 'Your OTP',
+                    max: '4',
+          
+                  }
+                ],
+          
+                buttons: [
+                  {
+                    text: 'Proceed',
+                    handler: data => {
+                      this.userDB.verifyUser(data.name1).subscribe(
+                        async (data: any) => {
+                          if (data.result === true) {
+                            let t1 = await this.toast.create({
+                              message: 'User Verified Successfully!',
+                              color: 'success',
+                              showCloseButton: true,
+                              closeButtonText: 'Done',
+                              duration: 1000,
+                            });
+                            // t1.present();
+                            this.storage.set('user_id', uid);
+                            this.events.publish('user:loggedin');
+                            this.route.navigateByUrl('/home');
+                            t1.present();
+                          }
+                          else if (data.result === false) {
+                            let t2 = await this.toast.create({
+                              message: 'Invalid OTP',
+                              color: 'warning',
+                              showCloseButton: true,
+                              closeButtonText: 'Done',
+                              duration: 1000,
+                            });
+                            t2.present();
+                          }
+                        },
+                        (err) => {
+                          console.log(err);
+                        },
+                        () => {
+          
+                        }
+                      )
+                    }
+                  },
+                  {
+                    text: 'Cancel',
+                    role: 'cancel'
+                  }
+                ]
+              });
+          
+              await alert.present(); 
+            }
           }
           else {
             const t2 = await this.toast.create({
@@ -128,27 +192,23 @@ export class LoginPage implements OnInit {
       comp,
       cont)).subscribe(
         async (data: any) => {
-
-          if (data.length == 1) {
-            if (data[0].result === "true") {
+            if (data.result === true) {
               let alert = await this.alertCtrl.create({
                 header: 'Signup',
                 subHeader: 'Please Check your email. An otp has been sent to your email which is valid for 15 minutes!',
                 buttons: ['Okay']
               });
               alert.present();
-
-              this.onotp();
+              // this.onotp();
             }
-            else if (data[0].reason === "User exist") {
+            else if (data.reason === "User exist") {
               let alert = await this.alertCtrl.create({
                 header: 'Error',
-                subHeader: 'Something went wrong!',
+                subHeader: 'User already exist. Please login.',
                 buttons: ['Okay']
               });
               alert.present();
             }
-          }
         }
       );
   }

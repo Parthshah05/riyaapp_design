@@ -61,6 +61,7 @@ export class UserDbService {
       otp: otp
     };
     const body = JSON.stringify(otpObj);
+    console.log(body);
     return this.http.put(this.verifyUrl, body, {
       headers: new HttpHeaders().set('Content-Type', 'application/json')
     });
