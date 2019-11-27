@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { Platform, ModalController, AlertController, Events } from '@ionic/angular';
+import { async } from '@angular/core/testing';
+import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
+import { Platform, ModalController, AlertController, Events, IonRouterOutlet, NavController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { Router } from '@angular/router';
+import { Router, RouterEvent, NavigationEnd } from '@angular/router';
 
 import { timer } from 'rxjs';
 import { ProductsDbService } from './providers/products-db/products-db.service';
 import { Storage } from '@ionic/storage';
 import { isNullOrUndefined } from 'util';
-import { CacheService,Cache } from 'ionic-cache-observable';
+import { CacheService, Cache } from 'ionic-cache-observable';
 import { Products_Category_Classs } from './shared/Products_Category_class';
 // import { Observable } from '../../node_modules/rxjs/internal/observable';
 import { Observable } from '../../node_modules/rxjs/observable';
@@ -23,7 +24,7 @@ import { Observable } from '../../node_modules/rxjs/observable';
 export class AppComponent implements OnInit {
 
   appPages: Array<{ title: string, url: string, icon: string }>;
-
+  @ViewChildren(IonRouterOutlet) routerOutlets: QueryList<IonRouterOutlet>;
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -35,9 +36,12 @@ export class AppComponent implements OnInit {
     private events: Events,
     private storage: Storage,
     private cacheService: CacheService,
+    private navCtrl: NavController
   ) {
 
     this.initializeApp();
+    this.backButtonEnable();
+
 
     this.appPages = [
       {
@@ -159,9 +163,9 @@ export class AppComponent implements OnInit {
       this.statusBar.show();
       this.statusBar.backgroundColorByHexString("#01528f");
       this.statusBar.styleDefault();
-      setTimeout(()=>{
+      setTimeout(() => {
         this.splashScreen.hide();
-      },3000);
+      }, 3000);
       // this.splashScreen.hide();
       this.route.navigateByUrl('/home');
       // timer(5000).subscribe(() => {
@@ -178,11 +182,55 @@ export class AppComponent implements OnInit {
       });
       await alert.present();
     }, false);
-    const sourceData:Observable<Products_Category_Classs[]> = this.productService.GetAllProductsAnother();
+    const sourceData: Observable<Products_Category_Classs[]> = this.productService.GetAllProductsAnother();
     // let productsObservable:Observable<Products_Category_Classs[]>;
-    this.cacheService.register('products',sourceData,true).mergeMap((cache:Cache<Products_Category_Classs[]>)=>cache.get())
-    .subscribe((data)=>{
-      console.log(" after registering in app.component.ts ",data);
-    });
+    this.cacheService.register('products', sourceData, true).mergeMap((cache: Cache<Products_Category_Classs[]>) => cache.get())
+      .subscribe((data) => {
+        console.log(' after registering in app.component.ts ', data);
+      });
   }
+
+  backButtonEnable() {
+    this.platform.backButton.subscribe(
+      async () => {
+        this.routerOutlets.forEach(
+          async (outlet: IonRouterOutlet) => {
+            if (this.route.url === '/home' || this.route.url === '') {
+              this.presentAlertConfirm();
+            }
+            else if (this.route.url === '/list' || this.route.url === '/cart' || this.route.url === '/contact' || this.route.url === '/profile') {
+              this.navCtrl.navigateRoot(['/home']);
+            }
+          }
+        );
+      }
+    );
+  }
+
+
+  async presentAlertConfirm() {
+    const alert = await this.alertController.create({
+      header: 'Confirm Exit!',
+      message: 'Do you want to exit???',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Yes',
+          handler: () => {
+            console.log('Confirm Okay');
+            navigator['app'].exitApp();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
 }
